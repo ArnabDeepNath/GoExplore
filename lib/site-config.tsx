@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "./firebase";
 
 export interface PackageItem {
@@ -154,6 +154,7 @@ export function SiteConfigProvider({ children }: { children: ReactNode }) {
       if (snapshot.exists()) {
         setConfig(normalizeSiteConfig(snapshot.data()));
       } else {
+        await setDoc(doc(db, "config", "site"), defaultSiteConfig, { merge: false });
         setConfig(defaultSiteConfig);
       }
     } catch (error) {
