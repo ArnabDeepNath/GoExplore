@@ -1,18 +1,21 @@
 "use client";
 
 import Link from "next/link";
+import { useSiteConfig } from "../lib/site-config";
 
 export default function Footer() {
+  const { config } = useSiteConfig();
+
   return (
     <footer className="bg-emerald-900 text-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           <div className="lg:col-span-1">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-9 h-9 bg-white rounded-xl flex items-center justify-center">
-                <span className="text-emerald-700 font-bold text-sm">GE</span>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl overflow-hidden bg-white flex items-center justify-center ring-1 ring-white/30">
+                <img src={config.logoUrl} alt="Go Explore" className="w-full h-full object-contain" />
               </div>
-              <span className="text-xl font-semibold">Go Explore</span>
+              <span className="text-xl font-semibold">{config.siteTitle}</span>
             </div>
             <p className="text-emerald-100 text-sm leading-relaxed mb-6">
               Discover curated getaways, local experiences, and handpicked tours tailored for every kind of traveler.

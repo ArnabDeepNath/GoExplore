@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useSiteConfig } from "../lib/site-config";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { config } = useSiteConfig();
 
   const navLinks = [
     { href: "/", label: "Home" },
@@ -18,11 +20,11 @@ export default function Header() {
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-xl border-b border-emerald-100">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-9 h-9 bg-emerald-600 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110">
-              <span className="text-white font-bold text-sm">GE</span>
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="w-10 h-10 rounded-xl overflow-hidden bg-white flex items-center justify-center ring-1 ring-emerald-100">
+              <img src={config.logoUrl} alt="Go Explore" className="w-full h-full object-contain" />
             </div>
-            <span className="text-xl font-semibold tracking-tight text-emerald-900">Go Explore</span>
+            <span className="text-xl font-semibold tracking-tight text-emerald-900">{config.siteTitle}</span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-8">

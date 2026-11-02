@@ -14,7 +14,7 @@ export default function AdminLayout({
 
   const menuItems = [
     { id: "dashboard", label: "Dashboard", href: "/admin", icon: "📊" },
-    { id: "cars", label: "Car Listings", href: "/admin/cars", icon: "🚗" },
+    { id: "packages", label: "Package Listings", href: "/admin/tours", icon: "🧳" },
     { id: "tours", label: "Tour Listings", href: "/admin/tours", icon: "🌍" },
   ];
 

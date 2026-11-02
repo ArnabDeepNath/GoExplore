@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useSiteConfig } from "../lib/site-config";
 
 const heroChips = ["Popular", "Customizable", "All Inclusive"];
 
@@ -47,67 +48,6 @@ const whyChooseUs = [
   },
 ];
 
-const featuredPackages = [
-  {
-    title: "Munnar Hill Station Escape",
-    location: "Kerala, India",
-    duration: "3 Days / 2 Nights · Guided",
-    price: "$120",
-    rating: "4.8",
-    tags: ["Best Seller", "Customizable"],
-    image: "/r1.jpg",
-  },
-  {
-    title: "Goa Beach & Adventure",
-    location: "Goa, India",
-    duration: "4 Days / 3 Nights · Adventure",
-    price: "$150",
-    rating: "4.9",
-    tags: ["Family Friendly"],
-    image: "/r2.jpg",
-  },
-  {
-    title: "Heritage Rajasthan Tour",
-    location: "Jaipur, India",
-    duration: "5 Days / 4 Nights · Heritage",
-    price: "$180",
-    rating: "4.7",
-    tags: ["Weekend Getaway"],
-    image:
-      "https://images.unsplash.com/photo-1505761671935-60b3a7427bad?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    title: "Himalayan Trek Retreat",
-    location: "Himachal, India",
-    duration: "6 Days / 5 Nights · Trek",
-    price: "$220",
-    rating: "4.8",
-    tags: ["Adventure", "Guided"],
-    image:
-      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    title: "Kerala Backwater Escape",
-    location: "Alleppey, India",
-    duration: "2 Days / 1 Night · Cruise",
-    price: "$95",
-    rating: "4.6",
-    tags: ["Relax"],
-    image:
-      "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    title: "Heritage Homestay Trails",
-    location: "Udaipur, India",
-    duration: "3 Days / 2 Nights · Stay",
-    price: "$110",
-    rating: "4.7",
-    tags: ["Customizable"],
-    image:
-      "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=900&q=80",
-  },
-];
-
 const stats = [
   { value: "1,200+", label: "Packages" },
   { value: "50k+", label: "Happy Travelers" },
@@ -116,6 +56,9 @@ const stats = [
 ];
 
 export default function Home() {
+  const { config } = useSiteConfig();
+  const packages = config.packages;
+
   return (
     <main className="bg-[#f5f7f2] text-slate-900">
       <section className="pt-28 pb-16 bg-gradient-to-b from-[#edf6ef] via-[#f6f7f2] to-white">
@@ -134,9 +77,9 @@ export default function Home() {
             <p className="text-xs uppercase tracking-[0.3em] text-emerald-700">
               Discover Your Next Adventure
             </p>
-            <h1 className="text-4xl md:text-6xl font-semibold">Book Your Perfect Getaway</h1>
+            <h1 className="text-4xl md:text-6xl font-semibold">{config.siteTitle}</h1>
             <p className="text-base md:text-lg text-slate-600 max-w-2xl">
-              Affordable travel, curated packages, and personalized service tailored to explorers like you.
+              {config.siteDescription}
             </p>
             <div className="w-full max-w-4xl bg-white/90 shadow-xl rounded-2xl p-4 md:p-5">
               <div className="flex flex-col md:flex-row items-center gap-3 md:gap-4">
@@ -169,7 +112,7 @@ export default function Home() {
             <div className="mt-6 w-full max-w-5xl">
               <div className="relative rounded-3xl overflow-hidden shadow-2xl">
                 <img
-                  src="/reference.jpeg"
+                  src={config.bannerUrl}
                   alt="Travelers enjoying a scenic journey"
                   className="w-full h-[360px] md:h-[420px] object-cover"
                 />
@@ -220,10 +163,10 @@ export default function Home() {
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {featuredPackages.map((pkg) => (
+            {packages.map((pkg) => (
               <div key={pkg.title} className="bg-white rounded-2xl overflow-hidden shadow-md border border-slate-100">
                 <div className="relative h-48 overflow-hidden">
-                  <img src={pkg.image} alt={pkg.title} className="w-full h-full object-cover" />
+                  <img src={pkg.imageUrl} alt={pkg.title} className="w-full h-full object-cover" />
                   <div className="absolute top-3 left-3 flex flex-wrap gap-2">
                     {pkg.tags.map((tag) => (
                       <span
