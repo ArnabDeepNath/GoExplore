@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ref, onValue, set, update } from "firebase/database";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../../../lib/firebase";
 
 interface SiteConfig {
@@ -19,27 +19,27 @@ export default function AdminConfigPage() {
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
 
-  // Load config from Firebase Realtime Database
+  // Load config from Firestore
   useEffect(() => {
-    const configRef = ref(db, "config");
-    const unsubscribe = onValue(
-      configRef,
-      (snapshot) => {
-        const data = snapshot.val();
-        if (data) {
+    const loadConfig = async () => {
+      try {
+        const configDoc = doc(db, "config", "site");
+        const snapshot = await getDoc(configDoc);
+        if (snapshot.exists()) {
+          const data = snapshot.data();
           setConfig({
-            siteTitle: data.siteTitle ?? "",
-            siteDescription: data.siteDescription ?? "",
+            siteTitle: (data.siteTitle as string) ?? "",
+            siteDescription: (data.siteDescription as string) ?? "",
           });
         }
+      } catch (err: any) {
+        setError(err.message || "Failed to load configuration.");
+      } finally {
         setLoading(false);
-      },
-      (err) => {
-        setError(err.message);
-        setLoading(false);
-      },
-    );
-    return () => unsubscribe();
+      }
+    };
+
+    loadConfig();
   }, []);
 
   const handleChange = (
@@ -55,8 +55,8 @@ export default function AdminConfigPage() {
     setError(null);
     setMessage(null);
     try {
-      // Use set to overwrite the config node
-      await set(ref(db, "config"), config);
+      // Use setDoc to overwrite the config document
+      await setDoc(doc(db, "config", "site"), config, { merge: false });
       setMessage("Configuration saved successfully.");
     } catch (err: any) {
       setError(err.message || "Failed to save configuration.");
